@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CFAV | Official Website</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif;}
+
+body{background:linear-gradient(135deg,#4b0000,#0a1a3f,#7a0c0c);color:#fff;min-height:100vh;overflow-x:hidden;}
+
+.glass{
+background:rgba(255,255,255,0.08);
+backdrop-filter:blur(15px);
+border-radius:20px;
+border:1px solid rgba(255,255,255,0.15);
+}
+
+header{
+position:fixed;
+top:0;
+width:100%;
+display:flex;
+align-items:center;
+justify-content:space-between;
+padding:15px 30px;
+background:rgba(0,0,0,0.6);
+z-index:100;
+overflow:hidden; /* allows video to stay inside */
+border-radius:20px;
+}
+
+/* Header video */
+#header-video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 0;
+  opacity: 0.3; /* make video semi-transparent */
+  pointer-events: none;
+  border-radius: 20px;
+}
+
+header .logo-container,
+header .title,
+header .header-links {
+  position: relative;
+  z-index: 1; /* content above video */
+}
+
+.logo-container img{width:70px;}
+
+.title h1{font-size:26px;color:#ff4b4b;}
+.title p{font-size:14px;color:#ffdede;}
+
+.header-links{display:flex;gap:15px;}
+.header-links a{
+color:#ffdede;
+text-decoration:none;
+font-weight:600;
+cursor:pointer;
+}
+.header-links a:hover{color:#ffb3b3;}
+
+.hero{margin:120px auto 30px;max-width:1100px;padding:40px;text-align:center;}
+.hero h2{font-size:40px;color:#ff4b4b;}
+.hero p{font-size:16px;}
+
+.search-container{text-align:center;margin:20px;}
+.search-container input{
+padding:10px;
+width:60%;
+border-radius:10px;
+border:none;
+font-size:16px;
+}
+
+.section{max-width:1200px;margin:50px auto;padding:0 30px;}
+.section h2{text-align:center;font-size:32px;color:#ff4b4b;}
+
+.members{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+gap:20px;
+}
+
+.member-card{
+padding:15px;
+text-align:center;
+cursor:pointer;
+transition:0.3s;
+}
+.member-card:hover{transform:scale(1.05);}
+.member-card img{width:100%;height:250px;object-fit:cover;border-radius:15px;}
+
+.modal{
+position:fixed;
+inset:0;
+background:rgba(0,0,0,0.7);
+display:none;
+align-items:center;
+justify-content:center;
+z-index:1000;
+}
+
+.modal-content{
+max-width:500px;
+padding:25px;
+background:#111;
+border-radius:15px;
+position:relative;
+}
+
+.close{
+position:absolute;
+right:20px;
+top:10px;
+font-size:28px;
+cursor:pointer;
+color:red;
+}
+
+/* ABOUT SLIDING & DESIGN */
+.about{
+max-width:1000px;
+margin:50px auto;
+padding:30px;
+background:rgba(0,0,0,0.85);
+border-radius:15px;
+position:fixed;
+top:50px;
+left:-1200px;
+transition:all 0.7s ease;
+z-index:50;
+color:#fff;
+box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+}
+
+.about.show{
+left:50px;
+}
+
+.about button{
+margin-top:15px;
+padding:10px 20px;
+border:none;
+border-radius:10px;
+background:#ff4b4b;
+color:#fff;
+cursor:pointer;
+transition:0.3s;
+}
+.about button:hover{
+background:#ff1a1a;
+}
+
+/* DETAILS (unchanged) */
+.details{
+max-width:1000px;
+margin:50px auto;
+padding:25px;
+background:rgba(255,255,255,0.08);
+border-radius:15px;
+}
+
+footer{text-align:center;padding:20px;opacity:0.7;}
+</style>
+</head>
+
+<body>
+
+<!-- HEADER -->
+<header class="glass">
+  <!-- Video background -->
+  <video autoplay muted loop id="header-video">
+    <source src="VIDEO/ys.mp4" type="video/mp4">
+    Your browser does not support the video tag.
+  </video>
+
+  <!-- Existing logo and title -->
+  <div class="logo-container">
+    <img src="Image/CFAV LOGO.png" alt="CFAV Logo">
+  </div>
+
+  <div class="title">
+    <h1>Campus First Aid Volunteer</h1>
+    <p>Official CFAV Organization Website</p>
+  </div>
+
+  <div class="header-links">
+    <a onclick="toggleAbout()">About</a>
+    <a onclick="scrollToSection('details')">Details</a>
+    <a onclick="scrollToSection('cfav')">Members</a>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="hero glass">
+<h2>Saving Lives. Serving Humanity.</h2>
+<p>Campus First Aid Volunteer is dedicated to emergency response, first aid training, and humanitarian service.</p>
+</section>
+
+<!-- SEARCH -->
+<div class="search-container">
+<input type="text" id="search" placeholder="Search Members..." onkeyup="filterMembers()">
+</div>
+
+<!-- CFAV MEMBERS -->
+<section class="section" id="cfav">
+<h2>CFAV Members</h2>
+
+<div class="members" id="cfav-members">
+
+  <div class="member-card glass" onclick="openModal('Bie, Adtrekster C.','President')">
+    <img src="CFAVMEMBERS/1.png"><h3>Bie, Adtrekster C.</h3><span>President</span>
+  </div>
+
+  <div class="member-card glass" onclick="openModal('Neri, Mark Joseph','VP for Operations')">
+    <img src="CFAVMEMBERS/2.png"><h3>Neri, Mark Joseph</h3><span>VP for Operations</span>
+  </div>
+
+  <div class="member-card glass" onclick="openModal('Taculod, Regie Mark C.','VP for Graphics and Media')">
+    <img src="CFAVMEMBERS/3.png"><h3>Taculod, Regie Mark C.</h3><span>VP Graphics & Media</span>
+  </div>
+
+  <div class="member-card glass" onclick="openModal('Cagape, Rhea Mae','Secretary')">
+    <img src="CFAVMEMBERS/4.png"><h3>Cagape, Rhea Mae</h3><span>Secretary</span>
+  </div>
+
+  <div class="member-card glass" onclick="openModal('Moreno, Evangeline A.','Treasurer')">
+    <img src="CFAVMEMBERS/5.png"><h3>Moreno, Evangeline A.</h3><span>Treasurer</span>
+  </div>
+
+  <div class="member-card glass" onclick="openModal('Saladaga, Genebel','Auditor')">
+    <img src="CFAVMEMBERS/6.png"><h3>Saladaga, Genebel</h3><span>Auditor</span>
+  </div>
+
+  <div class="member-card glass" onclick="openModal('Capuso, Niño','Public Information Officer')">
+    <img src="CFAVMEMBERS/7.png"><h3>Capuso, Niño</h3><span>Public Information Officer</span>
+  </div>
+
+  <div class="member-card glass" onclick="openModal('Duce, Jade Mahilom','Business Manager')">
+    <img src="CFAVMEMBERS/8.png"><h3>Duce, Jade Mahilom</h3><span>Business Manager</span>
+  </div>
+
+  <div class="member-card glass" onclick="openModal('Zampaga, Jeanny Babes','Business Manager')">
+    <img src="CFAVMEMBERS/9.png"><h3>Zampaga, Jeanny Babes</h3><span>Business Manager</span>
+  </div>
+
+  <div class="member-card glass" onclick="openModal('Astrolabio, Aerylle','Logistic Officer')">
+    <img src="CFAVMEMBERS/10.png"><h3>Astrolabio, Aerylle</h3><span>Logistic Officer</span>
+  </div>
+
+  <div class="member-card glass" onclick="openModal('Almirante, Kennex B.','Documentator')">
+    <img src="CFAVMEMBERS/11.png"><h3>Almirante, Kennex B.</h3><span>Documentator</span>
+  </div>
+
+  <div class="member-card glass" onclick="openModal('De Asis, Angela','Documentator')">
+    <img src="CFAVMEMBERS/12.png"><h3>De Asis, Angela</h3><span>Documentator</span>
+  </div>
+
+  <div class="member-card glass" onclick="openModal('Higan, Ian','1st Year Representative')">
+    <img src="CFAVMEMBERS/13.png"><h3>Higan, Ian</h3><span>1st Year Representative</span>
+  </div>
+
+  <div class="member-card glass" onclick="openModal('Loraña, Sam Angelo A.','2nd Year Representative')">
+    <img src="CFAVMEMBERS/14.png"><h3>Loraña, Sam Angelo A.</h3><span>2nd Year Representative</span>
+  </div>
+
+  <div class="member-card glass" onclick="openModal('Duhero, Jonas','3rd Year Representative')">
+    <img src="CFAVMEMBERS/15.png"><h3>Duhero, Jonas</h3><span>3rd Year Representative</span>
+  </div>
+
+  <div class="member-card glass" onclick="openModal('Failagmao, Ronmar Jake','4th Year Representative')">
+    <img src="CFAVMEMBERS/16.png"><h3>Failagmao, Ronmar Jake</h3><span>4th Year Representative</span>
+  </div>
+
+</div>
+</section>
+
+<!-- ABOUT -->
+<section class="about" id="about">
+<h2>About CFAV</h2>
+<p>
+The Campus First Aid Volunteer (CFAV) is a student-based organization that promotes first aid awareness, emergency response training, and humanitarian service. 
+Its purpose is to prepare students to respond during accidents, disasters, and medical emergencies inside and outside the school.
+</p>
+<button onclick="showPurpose()">View Purpose</button>
+</section>
+
+<!-- DETAILS -->
+<section class="details" id="details">
+<h2>Organization Details</h2>
+<p>
+CFAV conducts drills, trainings, outreach programs, and emergency support activities. Members are trained in CPR, first aid, disaster preparedness, and teamwork leadership.
+</p>
+</section>
+
+<!-- MODAL -->
+<div class="modal" id="modal">
+<div class="modal-content glass">
+<span class="close" onclick="closeModal()">&times;</span>
+<h2 id="mName"></h2>
+<p id="mDetails"></p>
+<p id="mQuote"></p>
+</div>
+</div>
+
+<footer>
+© 2026 Campus First Aid Volunteer Organization
+</footer>
+
+<script>
+// Member quotes based on position
+const memberQuotes = {
+  "President": "To serve and promote good for all students. To lead with integrity and inspire teamwork.",
+  "VP for Operations": "To ensure smooth functioning of all activities. To support members in achieving goals efficiently.",
+  "VP for Graphics and Media": "To create visuals that communicate our mission. To engage the community through creative media.",
+  "Secretary": "To maintain clear records and communication. To organize our efforts for maximum impact.",
+  "Treasurer": "To manage resources wisely and transparently. To ensure our programs are sustainable and effective.",
+  "Auditor": "To uphold accountability and fairness. To review our activities for continuous improvement.",
+  "Public Information Officer": "To share our achievements with the school and community. To inspire others through communication.",
+  "Business Manager": "To manage logistics and resources effectively. To support members and events with precision.",
+  "Logistic Officer": "To coordinate supplies and operations efficiently. To ensure smooth execution of activities.",
+  "Documentator": "To capture our journey in photos and videos. To preserve memories and document progress.",
+  "1st Year Representative": "To represent the voices of 1st-year students. To encourage participation and learning.",
+  "2nd Year Representative": "To advocate for 2nd-year students' needs. To support them in all CFAV activities.",
+  "3rd Year Representative": "To guide 3rd-year students with experience. To foster growth and responsibility.",
+  "4th Year Representative": "To mentor younger members. To uphold CFAV traditions and values."
+};
+
+// Open modal function
+function openModal(name, position){
+  document.getElementById("mName").textContent = name;
+  document.getElementById("mDetails").textContent = position;
+  document.getElementById("mQuote").textContent = memberQuotes[position] || "Dedicated to serving humanity.";
+  document.getElementById("modal").style.display = "flex";
+}
+
+function closeModal(){
+  document.getElementById("modal").style.display = "none";
+}
+
+function filterMembers(){
+let input=document.getElementById("search").value.toLowerCase();
+let cards=document.querySelectorAll(".member-card");
+cards.forEach(card=>{
+let name=card.querySelector("h3").textContent.toLowerCase();
+card.style.display=name.includes(input)?"block":"none";
+});
+}
+
+// About slide toggle
+function toggleAbout(){
+let about=document.getElementById('about');
+about.classList.toggle('show');
+}
+
+function showPurpose(){
+alert("Purpose of CFAV:\n\n• To train students in first aid and emergency response\n• To assist during school and community emergencies\n• To promote humanitarian values and volunteerism\n• To develop leadership and teamwork skills");
+}
+</script>
+
+</body>
+</html>
